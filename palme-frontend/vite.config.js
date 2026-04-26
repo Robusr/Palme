@@ -20,6 +20,11 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8000',
         changeOrigin: true
+      },
+      // 添加这部分：静态文件代理
+      '/static': {
+        target: 'http://localhost:5173',
+        changeOrigin: false
       }
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="chat-bubble">
     <div class="avatar">
-      <img src="../../../static/avatar.jpg" alt="头像">
+      <img src="../../../static/images/avatar.jpg" alt="头像">
     </div>
     <div class="bubble-content">
       <p>{{ text }}</p>

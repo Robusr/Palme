@@ -3,7 +3,7 @@
     <!-- 人格画像部分 -->
     <div class="personality-section">
       <div class="character-image">
-        <img :src="getCharacterImage(result.personality.name)" alt="角色图">
+        <img :src="result.personality.character_image" alt="角色图">
       </div>
       <h2 class="personality-name">{{ result.personality.name }}</h2>
       <h3 class="character-name">{{ result.personality.character_name }} · {{ result.personality.movie_name }}</h3>
@@ -25,30 +25,32 @@
     <!-- 操作按钮 -->
     <div class="action-buttons">
       <van-button type="default" size="large" @click="resetQuiz">重新测试</van-button>
-      <van-button type="primary" size="large" @click="shareResult">分享结果</van-button>
+      <van-button type="primary" size="large" @click="showSharePoster">分享结果</van-button>
     </div>
+
+    <!-- 分享海报组件 -->
+    <SharePoster
+      :result="result"
+      v-model:visible="showPoster"
+    />
   </div>
 
   <van-loading v-else size="large" class="loading" />
 </template>
 
 <script setup>
-import { computed } from 'vue' // 添加这行！
+import { computed, ref } from 'vue'
 import { useQuizStore } from '../stores/quizStore'
 import { useRouter } from 'vue-router'
 import MovieCard from '../components/MovieCard.vue'
+import SharePoster from '../components/SharePoster.vue' // 导入海报组件
 import { showToast } from 'vant'
 
 const quizStore = useQuizStore()
 const router = useRouter()
 
 const result = computed(() => quizStore.result)
-
-// 使用在线占位图
-const getCharacterImage = (name) => {
-  const seed = name.replace(/\s/g, '')
-  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`
-}
+const showPoster = ref(false) // 控制海报显示
 
 // 如果没有结果，跳回首页
 if (!result.value) {
@@ -60,8 +62,8 @@ const resetQuiz = () => {
   router.push('/')
 }
 
-const shareResult = () => {
-  showToast('分享功能开发中...')
+const showSharePoster = () => {
+  showPoster.value = true
 }
 </script>
 
