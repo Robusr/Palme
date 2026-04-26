@@ -1,7 +1,7 @@
 <template>
   <div class="chat-bubble">
     <div class="avatar">
-      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Palme" alt="头像">
+      <img src="../../../static/avatar.jpg" alt="头像">
     </div>
     <div class="bubble-content">
       <p>{{ text }}</p>
