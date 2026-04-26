@@ -7,17 +7,20 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: { transition: 'fade' }
   },
   {
     path: '/quiz',
     name: 'Quiz',
-    component: Quiz
+    component: Quiz,
+    meta: { transition: 'slide' }
   },
   {
     path: '/result',
     name: 'Result',
-    component: Result
+    component: Result,
+    meta: { transition: 'fade' }
   }
 ]
 

@@ -1,59 +1,63 @@
 <template>
-  <div class="result-container" v-if="result">
-    <!-- 人格画像部分 -->
-    <div class="personality-section">
-      <div class="character-image">
-        <img
-          :src="result.personality.character_image"
-          alt="角色图"
-          @error="handleImageError"
-        >
-      </div>
-      <h2 class="personality-name">{{ result.personality.name }}</h2>
-      <h3 class="character-name">{{ result.personality.character_name }} · {{ result.personality.movie_name }}</h3>
-      <p class="core-traits">{{ result.personality.core_traits }}</p>
-      <div class="interpretation">
-        <p>{{ result.personality.interpretation }}</p>
-      </div>
-      <p class="suitable-genres">最适配电影风格：{{ result.personality.suitable_genres }}</p>
-    </div>
+  <div class="result-container">
+    <SkeletonLoader v-if="loading" type="result"/>
 
-    <!-- 推荐电影部分 -->
-    <div class="movies-section">
-      <h3 class="section-title">为你推荐的电影</h3>
-      <div class="movies-list">
-        <MovieCard v-for="movie in result.movies" :key="movie.id" :movie="movie" />
+    <template v-else-if="result">
+      <!-- 人格画像部分 -->
+      <div class="personality-section">
+        <div class="character-image">
+          <img
+              :src="result.personality.character_image"
+              alt="角色图"
+              @error="handleImageError"
+          >
+        </div>
+        <h2 class="personality-name">{{ result.personality.name }}</h2>
+        <h3 class="character-name">{{ result.personality.character_name }} · {{ result.personality.movie_name }}</h3>
+        <p class="core-traits">{{ result.personality.core_traits }}</p>
+        <div class="interpretation">
+          <p>{{ result.personality.interpretation }}</p>
+        </div>
+        <p class="suitable-genres">最适配电影风格：{{ result.personality.suitable_genres }}</p>
       </div>
-    </div>
 
-    <!-- 操作按钮 -->
-    <div class="action-buttons">
-      <van-button type="default" size="large" @click="resetQuiz">重新测试</van-button>
-      <van-button type="primary" size="large" @click="showSharePoster">分享结果</van-button>
-    </div>
+      <!-- 推荐电影部分 -->
+      <div class="movies-section">
+        <h3 class="section-title">为你推荐的电影</h3>
+        <div class="movies-list">
+          <MovieCard v-for="movie in result.movies" :key="movie.id" :movie="movie"/>
+        </div>
+      </div>
 
-    <!-- 分享海报组件 -->
-    <SharePoster
-      :result="result"
-      v-model:visible="showPoster"
-    />
+      <!-- 操作按钮 -->
+      <div class="action-buttons">
+        <van-button type="default" size="large" @click="resetQuiz">重新测试</van-button>
+        <van-button type="primary" size="large" @click="showSharePoster">分享结果</van-button>
+      </div>
+
+      <!-- 分享海报组件 -->
+      <SharePoster
+          :result="result"
+          v-model:visible="showPoster"
+      />
+    </template>
   </div>
-
-  <van-loading v-else size="large" class="loading" />
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
-import { useQuizStore } from '../stores/quizStore'
-import { useRouter } from 'vue-router'
+import {computed, ref, onMounted} from 'vue'
+import {useQuizStore} from '../stores/quizStore'
+import {useRouter} from 'vue-router'
 import MovieCard from '../components/MovieCard.vue'
 import SharePoster from '../components/SharePoster.vue'
-import { showToast } from 'vant'
+import SkeletonLoader from '../components/SkeletonLoader.vue'
+import {showToast} from 'vant'
 
 const quizStore = useQuizStore()
 const router = useRouter()
 
 const result = computed(() => quizStore.result)
+const loading = computed(() => quizStore.loading)
 const showPoster = ref(false)
 
 // 图片加载失败处理
@@ -61,10 +65,12 @@ const handleImageError = (e) => {
   e.target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=default'
 }
 
-// 如果没有结果，跳回首页
-if (!result.value) {
-  router.push('/')
-}
+// 组件挂载时检查数据
+onMounted(() => {
+  if (!result.value && !loading.value) {
+    router.push('/')
+  }
+})
 
 const resetQuiz = () => {
   quizStore.resetQuiz()
@@ -85,13 +91,6 @@ const showSharePoster = () => {
   padding-bottom: 100px;
 }
 
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
 .personality-section {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -106,7 +105,7 @@ const showSharePoster = () => {
   overflow: hidden;
   margin: 0 auto 20px;
   border: 4px solid white;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   background: white;
 }
 
@@ -135,7 +134,7 @@ const showSharePoster = () => {
 }
 
 .interpretation {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   padding: 16px;
   border-radius: 12px;
   margin-bottom: 16px;
@@ -172,12 +171,14 @@ const showSharePoster = () => {
   right: 0;
   display: flex;
   padding: 16px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
   background: white;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   gap: 12px;
 }
 
 .action-buttons .van-button {
   flex: 1;
+  min-height: 48px;
 }
 </style>
