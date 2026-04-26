@@ -6,12 +6,16 @@
 @Description: 初始数据填充脚本
 @Software: PyCharm
 """
-
 import os
+import sys
 import django
 import json
 
-# 设置Django环境
+# 添加项目根目录到 Python 路径
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
+
+# 设置 Django 环境
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Palme.settings')
 django.setup()
 
@@ -19,14 +23,13 @@ from palme_api.models import Question, Option, Personality, Movie
 
 
 def populate_questions_and_options():
-    """填充问题和选项数据"""
     print("正在填充问题和选项数据...")
 
     # 清空现有数据
     Question.objects.all().delete()
     Option.objects.all().delete()
 
-    # 问题数据
+    # 完整的7道题数据
     questions_data = [
         {
             "question_text": "我们第一次约会，你会选择带我去哪里呢？",
@@ -231,7 +234,6 @@ def populate_questions_and_options():
 
 
 def populate_personalities():
-    """填充人格画像数据"""
     print("正在填充人格画像数据...")
 
     # 清空现有数据
@@ -309,7 +311,6 @@ def populate_personalities():
 
 
 def populate_movies_from_json():
-    """从JSON文件填充电影数据"""
     print("正在填充电影数据...")
 
     # 清空现有数据
@@ -317,8 +318,116 @@ def populate_movies_from_json():
 
     # 读取JSON文件
     json_path = os.path.join(os.path.dirname(__file__), 'movies.json')
-    with open(json_path, 'r', encoding='utf-8') as f:
-        movies_data = json.load(f)
+
+    # 检查文件是否存在
+    if not os.path.exists(json_path):
+        print(f"警告: {json_path} 文件不存在，将创建示例电影数据")
+        # 创建示例电影数据
+        movies_data = [
+            {
+                "title": "钢铁侠",
+                "poster": "/static/images/posters/ironman.jpg",
+                "genres": "科幻/动作/冒险",
+                "douban_rating": 8.4,
+                "release_year": 2008,
+                "director": "乔恩·费儒",
+                "summary": "托尼·斯塔克是一位天才发明家，也是一位亿万富翁。在一次被绑架的经历中，他制造了一套高科技盔甲，从此化身钢铁侠，开始了他的超级英雄生涯。",
+                "feature_vector": [0.3, 0.9, 0.8, 0.9, 0.7, 0.7, 0.5]
+            },
+            {
+                "title": "千与千寻",
+                "poster": "/static/images/posters/spiritedaway.jpg",
+                "genres": "动画/奇幻/冒险",
+                "douban_rating": 9.4,
+                "release_year": 2001,
+                "director": "宫崎骏",
+                "summary": "千寻和父母在搬家途中误入了一个神秘的世界。父母因为贪吃变成了猪，千寻为了救父母，在汤婆婆的澡堂里工作，经历了一系列奇妙的冒险。",
+                "feature_vector": [0.5, 0.4, 0.3, 0.3, 0.4, 0.5, 0.4]
+            },
+            {
+                "title": "教父",
+                "poster": "/static/images/posters/godfather.jpg",
+                "genres": "剧情/犯罪",
+                "douban_rating": 9.3,
+                "release_year": 1972,
+                "director": "弗朗西斯·福特·科波拉",
+                "summary": "柯里昂家族是美国最有权势的黑手党家族之一。教父维托·柯里昂深受人们的尊敬，但也树敌众多。当他遭遇暗杀后，他的小儿子迈克不得不接手家族事务。",
+                "feature_vector": [0.6, 0.5, 0.5, 0.5, 0.8, 0.7, 0.6]
+            },
+            {
+                "title": "阿甘正传",
+                "poster": "/static/images/posters/forrestgump.jpg",
+                "genres": "剧情/爱情",
+                "douban_rating": 9.5,
+                "release_year": 1994,
+                "director": "罗伯特·泽米吉斯",
+                "summary": "阿甘是一个智商只有75的低能儿，但他的一生却充满了传奇色彩。他参加了越战，成为了乒乓球明星，甚至成为了亿万富翁。",
+                "feature_vector": [0.3, 0.5, 0.4, 0.4, 0.5, 0.2, 0.3]
+            },
+            {
+                "title": "哈利·波特与魔法石",
+                "poster": "/static/images/posters/harrypotter1.jpg",
+                "genres": "奇幻/冒险",
+                "douban_rating": 9.2,
+                "release_year": 2001,
+                "director": "克里斯·哥伦布",
+                "summary": "哈利·波特是一个孤儿，从小被姨妈一家收养。在他11岁生日那天，他得知自己是一名巫师，并被邀请到霍格沃茨魔法学校学习。",
+                "feature_vector": [0.5, 0.6, 0.4, 0.5, 0.8, 0.8, 0.5]
+            },
+            {
+                "title": "泰坦尼克号",
+                "poster": "/static/images/posters/titanic.jpg",
+                "genres": "剧情/爱情/灾难",
+                "douban_rating": 9.5,
+                "release_year": 1997,
+                "director": "詹姆斯·卡梅隆",
+                "summary": "1912年，泰坦尼克号从英国南安普顿出发驶往美国纽约。在船上，穷画家杰克和贵族少女露丝相遇并相爱了。然而，这艘巨轮却在途中撞上了冰山。",
+                "feature_vector": [0.6, 0.5, 0.5, 0.4, 0.5, 0.8, 0.8]
+            },
+            {
+                "title": "肖申克的救赎",
+                "poster": "/static/images/posters/shawshank.jpg",
+                "genres": "剧情/犯罪",
+                "douban_rating": 9.7,
+                "release_year": 1994,
+                "director": "弗兰克·德拉邦特",
+                "summary": "银行家安迪被冤枉杀害了妻子和她的情人，被判处终身监禁。在肖申克监狱里，他结识了瑞德，并开始了长达19年的越狱计划。",
+                "feature_vector": [0.7, 0.4, 0.6, 0.3, 0.7, 0.6, 0.7]
+            },
+            {
+                "title": "盗梦空间",
+                "poster": "/static/images/posters/inception.jpg",
+                "genres": "科幻/悬疑/动作",
+                "douban_rating": 9.4,
+                "release_year": 2010,
+                "director": "克里斯托弗·诺兰",
+                "summary": "道姆·柯布是一位经验丰富的盗梦者，他能够潜入别人的梦境，窃取他们潜意识中的秘密。为了回到自己的孩子身边，他接受了一项几乎不可能完成的任务。",
+                "feature_vector": [0.5, 0.8, 0.7, 0.8, 0.9, 0.8, 0.9]
+            },
+            {
+                "title": "星际穿越",
+                "poster": "/static/images/posters/interstellar.jpg",
+                "genres": "科幻/剧情/冒险",
+                "douban_rating": 9.4,
+                "release_year": 2014,
+                "director": "克里斯托弗·诺兰",
+                "summary": "在不久的将来，地球面临着严重的环境危机。前NASA宇航员库珀接受了一项秘密任务，带领一支小队穿越虫洞，寻找适合人类居住的新星球。",
+                "feature_vector": [0.4, 0.7, 0.6, 0.9, 0.6, 0.7, 0.8]
+            },
+            {
+                "title": "楚门的世界",
+                "poster": "/static/images/posters/trumanshow.jpg",
+                "genres": "剧情/科幻",
+                "douban_rating": 9.4,
+                "release_year": 1998,
+                "director": "彼得·威尔",
+                "summary": "楚门从出生起就生活在一个巨大的摄影棚里，他的一举一动都被直播给全世界的观众。直到有一天，他发现了这个秘密，并决定逃离这个虚假的世界。",
+                "feature_vector": [0.6, 0.6, 0.5, 0.4, 0.7, 0.5, 0.8]
+            }
+        ]
+    else:
+        with open(json_path, 'r', encoding='utf-8') as f:
+            movies_data = json.load(f)
 
     # 插入数据
     for m_data in movies_data:

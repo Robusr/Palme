@@ -6,3 +6,8 @@
 @Description: 应用配置文件
 @Software: PyCharm
 """
+from django.apps import AppConfig
+
+class PalmeApiConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'palme_api'

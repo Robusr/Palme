@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'palme_api'
+    'palme_api.apps.PalmeApiConfig',
+    # 'palme_api',
     'corsheaders',
     # 'rest_framework',
     # 'rest_framework.authtoken',

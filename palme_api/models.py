@@ -29,7 +29,6 @@ class Option(models.Model):
     id = models.AutoField(primary_key=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='options')
     option_text = models.CharField(max_length=255, verbose_name="选项内容")
-    # 7维偏好向量: [题材,节奏,情感基调,制作规模,冲突解决,角色人设,结局]
     preference_vector = models.JSONField(verbose_name="电影偏好向量")
     order = models.IntegerField(verbose_name="选项顺序")
 
@@ -51,7 +50,6 @@ class Personality(models.Model):
     core_traits = models.TextField(verbose_name="核心特质")
     interpretation = models.TextField(verbose_name="人格解读")
     suitable_genres = models.CharField(max_length=255, verbose_name="最适配电影风格")
-    # 匹配阈值向量
     match_threshold = models.JSONField(verbose_name="匹配阈值向量")
 
     class Meta:
@@ -71,7 +69,6 @@ class Movie(models.Model):
     release_year = models.IntegerField(verbose_name="上映年份")
     director = models.CharField(max_length=100, verbose_name="导演")
     summary = models.TextField(verbose_name="简介")
-    # 7维特征向量: [题材,节奏,情感基调,制作规模,冲突解决,角色人设,结局]
     feature_vector = models.JSONField(verbose_name="电影特征向量")
 
     class Meta:

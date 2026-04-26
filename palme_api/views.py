@@ -16,8 +16,9 @@ from .serializers import (
     SubmitAllAnswersRequestSerializer
 )
 from .services.personality_service import PersonalityService
-from .services.recommendation_service import recommendation_service
 
+
+# 移除这行：from .services.recommendation_service import recommendation_service
 
 class QuestionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Question.objects.all().order_by('order')
@@ -37,7 +38,6 @@ class MovieViewSet(viewsets.ReadOnlyModelViewSet):
 class SessionViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
     def create_session(self, request):
-        """创建新的用户会话"""
         session = UserSession.objects.create()
         return Response({'session_id': session.id}, status=status.HTTP_201_CREATED)
 
@@ -45,7 +45,6 @@ class SessionViewSet(viewsets.ViewSet):
 class AnswerViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
     def submit_answer(self, request):
-        """提交单个答案"""
         serializer = SubmitAnswerRequestSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -61,7 +60,6 @@ class AnswerViewSet(viewsets.ViewSet):
         except (UserSession.DoesNotExist, Question.DoesNotExist, Option.DoesNotExist):
             return Response({'error': '无效的会话、问题或选项'}, status=status.HTTP_404_NOT_FOUND)
 
-        # 创建或更新答题记录
         UserAnswer.objects.update_or_create(
             session=session,
             question=question,
@@ -72,7 +70,9 @@ class AnswerViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['post'])
     def submit_all_answers(self, request):
-        """提交所有答案并生成结果"""
+        # 在函数内部导入，避免模块级导入
+        from .services.recommendation_service import recommendation_service
+
         serializer = SubmitAllAnswersRequestSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -85,7 +85,6 @@ class AnswerViewSet(viewsets.ViewSet):
         except UserSession.DoesNotExist:
             return Response({'error': '无效的会话'}, status=status.HTTP_404_NOT_FOUND)
 
-        # 保存所有答案
         user_answers = []
         for answer_data in answers_data:
             question_id = answer_data['question_id']
@@ -104,16 +103,10 @@ class AnswerViewSet(viewsets.ViewSet):
             )
             user_answers.append(user_answer)
 
-        # 计算用户偏好向量
         user_preference = PersonalityService.calculate_user_preference(user_answers)
-
-        # 匹配人格画像
         personality = PersonalityService.match_personality(user_preference)
-
-        # 生成电影推荐
         recommended_movie_ids = recommendation_service.recommend_movies(user_preference)
 
-        # 保存用户结果
         user_result = UserResult.objects.create(
             session=session,
             personality=personality,
@@ -121,7 +114,6 @@ class AnswerViewSet(viewsets.ViewSet):
             recommended_movies=recommended_movie_ids
         )
 
-        # 返回结果
         result_serializer = UserResultSerializer(user_result)
         return Response(result_serializer.data, status=status.HTTP_200_OK)
 
@@ -132,7 +124,6 @@ class ResultViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(detail=False, methods=['get'])
     def get_by_session(self, request):
-        """根据会话ID获取结果"""
         session_id = request.query_params.get('session_id')
         if not session_id:
             return Response({'error': '缺少session_id参数'}, status=status.HTTP_400_BAD_REQUEST)
