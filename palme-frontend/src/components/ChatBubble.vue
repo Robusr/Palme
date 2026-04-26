@@ -1,7 +1,11 @@
 <template>
   <div class="chat-bubble">
     <div class="avatar">
-      <img src="../../../static/images/avatar.jpg" alt="头像">
+      <img
+        src="https://api.dicebear.com/7.x/avataaars/svg?seed=Palme"
+        alt="头像"
+        @error="handleImageError"
+      >
     </div>
     <div class="bubble-content">
       <p>{{ text }}</p>
@@ -16,6 +20,10 @@ defineProps({
     required: true
   }
 })
+
+const handleImageError = (e) => {
+  e.target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=default'
+}
 </script>
 
 <style scoped>

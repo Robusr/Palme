@@ -3,7 +3,11 @@
     <!-- 人格画像部分 -->
     <div class="personality-section">
       <div class="character-image">
-        <img :src="result.personality.character_image" alt="角色图">
+        <img
+          :src="result.personality.character_image"
+          alt="角色图"
+          @error="handleImageError"
+        >
       </div>
       <h2 class="personality-name">{{ result.personality.name }}</h2>
       <h3 class="character-name">{{ result.personality.character_name }} · {{ result.personality.movie_name }}</h3>
@@ -43,14 +47,19 @@ import { computed, ref } from 'vue'
 import { useQuizStore } from '../stores/quizStore'
 import { useRouter } from 'vue-router'
 import MovieCard from '../components/MovieCard.vue'
-import SharePoster from '../components/SharePoster.vue' // 导入海报组件
+import SharePoster from '../components/SharePoster.vue'
 import { showToast } from 'vant'
 
 const quizStore = useQuizStore()
 const router = useRouter()
 
 const result = computed(() => quizStore.result)
-const showPoster = ref(false) // 控制海报显示
+const showPoster = ref(false)
+
+// 图片加载失败处理
+const handleImageError = (e) => {
+  e.target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=default'
+}
 
 // 如果没有结果，跳回首页
 if (!result.value) {

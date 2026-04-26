@@ -17,14 +17,10 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
+      // 只保留 API 代理，移除 static 代理！
       '/api': {
         target: 'http://localhost:8000',
         changeOrigin: true
-      },
-      // 添加这部分：静态文件代理
-      '/static': {
-        target: 'http://localhost:5173',
-        changeOrigin: false
       }
     }
   }

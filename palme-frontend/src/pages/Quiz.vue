@@ -2,12 +2,17 @@
   <div class="quiz-container">
     <!-- 情景图片 -->
     <div class="scenario-image">
-      <img :src="currentQuestion.scenario_image" alt="情景图" v-if="currentQuestion">
+      <img
+        :src="currentQuestion.scenario_image"
+        alt="情景图"
+        v-if="currentQuestion"
+        @error="handleImageError"
+      >
     </div>
 
     <!-- 进度条 -->
     <van-progress
-      :percentage="(currentQuestionIndex + 1) * 100 / questions.length"
+      :percentage="Math.round((currentQuestionIndex + 1) * 100 / questions.length)"
       class="progress-bar"
       color="#667eea"
       stroke-width="4"
@@ -54,6 +59,11 @@ const currentQuestionIndex = computed(() => quizStore.currentQuestionIndex)
 const currentQuestion = computed(() => questions.value[currentQuestionIndex.value])
 const loading = computed(() => quizStore.loading)
 
+// 图片加载失败处理
+const handleImageError = (e) => {
+  e.target.src = 'https://picsum.photos/seed/default/800/600'
+}
+
 // 组件挂载时检查数据
 onMounted(() => {
   if (questions.value.length === 0) {
@@ -80,16 +90,6 @@ const selectOption = async (optionId) => {
   display: flex;
   flex-direction: column;
   background: #f5f5f5;
-}
-
-.loading-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
 }
 
 .scenario-image {

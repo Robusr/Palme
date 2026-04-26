@@ -1,7 +1,11 @@
 <template>
   <div class="movie-card" @click="showDetail">
     <div class="poster">
-      <img :src="getMoviePoster(movie.title)" alt="电影海报">
+      <img
+        :src="movie.poster"
+        alt="电影海报"
+        @error="handleImageError"
+      >
     </div>
     <div class="info">
       <h4 class="title">{{ movie.title }}</h4>
@@ -24,9 +28,8 @@ const props = defineProps({
   }
 })
 
-const getMoviePoster = (title) => {
-  const seed = title.replace(/\s/g, '')
-  return `https://picsum.photos/seed/${seed}/300/450`
+const handleImageError = (e) => {
+  e.target.src = 'https://picsum.photos/seed/movie/300/450'
 }
 
 const showDetail = () => {

@@ -19,7 +19,11 @@
           <div class="poster-avatar-container">
             <div class="poster-avatar-ring"></div>
             <div class="poster-avatar">
-              <img :src="result.personality.character_image" alt="角色头像">
+              <img
+                :src="result.personality.character_image"
+                alt="角色头像"
+                @error="handleAvatarError"
+              >
             </div>
           </div>
 
@@ -53,7 +57,11 @@
           <div class="poster-movies-grid">
             <div v-for="(movie, index) in result.movies.slice(0, 4)" :key="movie.id" class="poster-movie-item">
               <div class="poster-movie-poster">
-                <img :src="movie.poster" alt="电影海报">
+                <img
+                  :src="movie.poster"
+                  alt="电影海报"
+                  @error="handleMovieError"
+                >
                 <div class="movie-rating-badge">
                   <span>★</span>
                   <span>{{ movie.douban_rating }}</span>
@@ -142,6 +150,15 @@ const getPosterBackground = (name) => {
     '杰克型': 'linear-gradient(180deg, #2c3e50 0%, #4ca1af 30%, #3a6186 60%, #89253e 100%)'
   }
   return backgrounds[name] || 'linear-gradient(180deg, #667eea 0%, #764ba2 50%, #f093fb 100%)'
+}
+
+// 图片加载失败处理
+const handleAvatarError = (e) => {
+  e.target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=default'
+}
+
+const handleMovieError = (e) => {
+  e.target.src = 'https://picsum.photos/seed/movie/300/450'
 }
 
 const close = () => {
