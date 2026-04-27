@@ -2,9 +2,9 @@
   <div class="chat-bubble">
     <div class="avatar">
       <img
-        src="https://api.dicebear.com/7.x/avataaars/svg?seed=Palme"
-        alt="头像"
-        @error="handleImageError"
+          src="https://api.dicebear.com/7.x/avataaars/svg?seed=Palme"
+          alt="头像"
+          @error="handleImageError"
       >
     </div>
     <div class="bubble-content">
@@ -15,8 +15,8 @@
 </template>
 
 <script setup>
-import { toRef } from 'vue'
-import { useTypewriter } from '../composables/useTypewriter'
+import {toRef} from 'vue'
+import {useTypewriter} from '../composables/useTypewriter'
 
 const props = defineProps({
   text: {
@@ -27,7 +27,7 @@ const props = defineProps({
 
 // 使用toRef创建响应式引用，确保watch能正确触发
 const textRef = toRef(props, 'text')
-const { displayedText, isTyping } = useTypewriter(textRef, 40)
+const {displayedText, isTyping} = useTypewriter(textRef, 40)
 
 const handleImageError = (e) => {
   e.target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=default'
@@ -63,7 +63,7 @@ const handleImageError = (e) => {
   padding: 12px 16px;
   border-radius: 18px;
   border-top-left-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
@@ -83,7 +83,11 @@ const handleImageError = (e) => {
 }
 
 @keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
 }
 </style>

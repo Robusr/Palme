@@ -34,11 +34,11 @@
       </div>
 
       <van-button
-        type="primary"
-        size="large"
-        class="start-btn"
-        @click="startQuiz"
-        :loading="loading"
+          type="primary"
+          size="large"
+          class="start-btn"
+          @click="startQuiz"
+          :loading="loading"
       >
         开始约会
       </van-button>
@@ -49,10 +49,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useQuizStore } from '../stores/quizStore'
-import { useRouter } from 'vue-router'
-import { useLoadingStore } from '../stores/loadingStore'
+import {ref} from 'vue'
+import {useQuizStore} from '../stores/quizStore'
+import {useRouter} from 'vue-router'
+import {useLoadingStore} from '../stores/loadingStore'
 
 const quizStore = useQuizStore()
 const router = useRouter()
@@ -178,7 +178,7 @@ const startQuiz = async () => {
   font-size: 56px;
   font-weight: 900;
   margin-bottom: 10px;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   letter-spacing: 8px;
 }
 
@@ -224,13 +224,13 @@ const startQuiz = async () => {
   background: white;
   color: #667eea;
   border: none;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
 .start-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
 .start-btn:active {

@@ -1,24 +1,24 @@
 <template>
   <div class="quiz-container">
     <!-- 只在数据未加载时显示骨架屏 -->
-    <SkeletonLoader v-if="!currentQuestion" type="quiz" />
+    <SkeletonLoader v-if="!currentQuestion" type="quiz"/>
 
     <template v-else>
       <!-- 情景图片：添加key强制重新渲染 -->
       <div class="scenario-image" :key="currentQuestionIndex">
         <img
-          :src="currentQuestion.scenario_image"
-          alt="情景图"
-          @error="handleImageError"
+            :src="currentQuestion.scenario_image"
+            alt="情景图"
+            @error="handleImageError"
         >
       </div>
 
       <!-- 进度条 -->
       <van-progress
-        :percentage="Math.round((currentQuestionIndex + 1) * 100 / questions.length)"
-        class="progress-bar"
-        color="#667eea"
-        stroke-width="4"
+          :percentage="Math.round((currentQuestionIndex + 1) * 100 / questions.length)"
+          class="progress-bar"
+          color="#667eea"
+          stroke-width="4"
       />
 
       <!-- 进度文字 -->
@@ -28,20 +28,20 @@
 
       <!-- 对话区域：添加key强制重新渲染 -->
       <div class="chat-area" :key="`chat-${currentQuestionIndex}`">
-        <ChatBubble :text="currentQuestion.question_text" />
+        <ChatBubble :text="currentQuestion.question_text"/>
       </div>
 
       <!-- 选项区域：移除transition-group，改用简单v-for -->
       <div class="options-area">
         <van-button
-          v-for="option in currentQuestion.options"
-          :key="`${currentQuestionIndex}-${option.id}`"
-          type="default"
-          size="large"
-          class="option-btn"
-          @click="selectOption(option.id)"
-          :loading="submitting"
-          :disabled="submitting"
+            v-for="option in currentQuestion.options"
+            :key="`${currentQuestionIndex}-${option.id}`"
+            type="default"
+            size="large"
+            class="option-btn"
+            @click="selectOption(option.id)"
+            :loading="submitting"
+            :disabled="submitting"
         >
           {{ option.option_text }}
         </van-button>
@@ -51,12 +51,12 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, nextTick } from 'vue'
-import { useQuizStore } from '../stores/quizStore'
-import { useRouter } from 'vue-router'
+import {computed, onMounted, ref, nextTick} from 'vue'
+import {useQuizStore} from '../stores/quizStore'
+import {useRouter} from 'vue-router'
 import ChatBubble from '../components/ChatBubble.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
-import { useLoadingStore } from '../stores/loadingStore'
+import {useLoadingStore} from '../stores/loadingStore'
 
 const quizStore = useQuizStore()
 const router = useRouter()
@@ -157,7 +157,7 @@ const selectOption = async (optionId) => {
   background: white;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .option-btn {

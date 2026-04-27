@@ -3,9 +3,9 @@
     <div class="poster-container">
       <!-- 海报内容（用于生成图片） -->
       <div
-        ref="posterRef"
-        class="poster-content"
-        :style="{ background: getPosterBackground(result.personality.name) }"
+          ref="posterRef"
+          class="poster-content"
+          :style="{ background: getPosterBackground(result.personality.name) }"
       >
         <!-- 顶部装饰 -->
         <div class="poster-decoration-top">
@@ -20,9 +20,9 @@
             <div class="poster-avatar-ring"></div>
             <div class="poster-avatar">
               <img
-                :src="result.personality.character_image"
-                alt="角色头像"
-                @error="handleAvatarError"
+                  :src="result.personality.character_image"
+                  alt="角色头像"
+                  @error="handleAvatarError"
               >
             </div>
           </div>
@@ -58,9 +58,9 @@
             <div v-for="(movie, index) in result.movies.slice(0, 4)" :key="movie.id" class="poster-movie-item">
               <div class="poster-movie-poster">
                 <img
-                  :src="movie.poster"
-                  alt="电影海报"
-                  @error="handleMovieError"
+                    :src="movie.poster"
+                    alt="电影海报"
+                    @error="handleMovieError"
                 >
                 <div class="movie-rating-badge">
                   <span>★</span>
@@ -98,11 +98,11 @@
           取消
         </van-button>
         <van-button
-          type="primary"
-          size="large"
-          class="save-btn"
-          :loading="generating"
-          @click="generatePoster"
+            type="primary"
+            size="large"
+            class="save-btn"
+            :loading="generating"
+            @click="generatePoster"
         >
           <span v-if="!generating" class="btn-icon">📷</span>
           {{ generating ? '生成中...' : '保存海报' }}
@@ -113,9 +113,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import {ref, computed} from 'vue'
 import html2canvas from 'html2canvas'
-import { showToast } from 'vant'
+import {showToast} from 'vant'
 
 const props = defineProps({
   result: {
@@ -356,7 +356,7 @@ const generatePoster = async () => {
   right: -4px;
   bottom: -4px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
   animation: rotate 8s linear infinite;
 }
 
@@ -377,7 +377,7 @@ const generatePoster = async () => {
   overflow: hidden;
   border: 4px solid rgba(255, 255, 255, 0.9);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
-              0 0 0 1px rgba(255, 255, 255, 0.2);
+  0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .poster-avatar img {
