@@ -16,6 +16,7 @@
 
       <p class="subtitle">通过一场浪漫的约会</p>
       <p class="subtitle">发现你的专属电影人格</p>
+      <p class="subtitle">Powered By Robusr</p>
 
       <div class="features">
         <div class="feature-item">
