@@ -18,3 +18,5 @@ sympy==1.14.0
 torch==2.11.0
 types-PyYAML==6.0.12.20260408
 typing_extensions==4.15.0
+
+gunicorn==21.2.0  # Django 生产环境服务器
