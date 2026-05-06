@@ -1,6 +1,5 @@
 import {defineStore} from 'pinia'
-import {ref, computed} from 'vue' // 添加这行！
-import {createSession, getQuestions, submitAllAnswers, getResultBySession} from '../utils/api'
+import {createSession, getQuestions, submitAllAnswers} from '../utils/api'
 
 export const useQuizStore = defineStore('quiz', {
     state: () => ({
@@ -28,6 +27,7 @@ export const useQuizStore = defineStore('quiz', {
                 this.result = null
             } catch (error) {
                 console.error('初始化失败:', error)
+                throw error
             } finally {
                 this.loading = false
             }
@@ -58,18 +58,20 @@ export const useQuizStore = defineStore('quiz', {
                 return res.data
             } catch (error) {
                 console.error('提交答案失败:', error)
+                throw error
             } finally {
                 this.loading = false
             }
         },
 
-
+        // 重新开始测试
         resetQuiz() {
             this.sessionId = null
             this.questions = []
             this.currentQuestionIndex = 0
-            this.answers = [] // 确保重置answers数组
+            this.answers = []
             this.result = null
+            this.loading = false
         }
     }
 })
